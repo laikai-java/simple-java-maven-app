@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'maven:latest'
+            image 'maven:3-alpine'
             args '-v /root/.m2:/root/.m2'
         }
     }
@@ -12,19 +12,19 @@ pipeline {
             }
         }
         stage('Test') {
-                        steps {
-                            sh 'mvn test'
-                        }
-                        post {
-                            always {
-                                junit 'target/surefire-reports/*.xml'
-                            }
-                        }
-                    }
+            steps {
+                sh 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
         stage('Deliver') {
-                    steps {
-                        sh './jenkins/scripts/deliver.sh'
-                    }
-                }
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+            }
+        }
     }
+}
